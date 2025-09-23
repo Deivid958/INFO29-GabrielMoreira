@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void menugeral(void);
+char menugeral(void);
 
 int main(void)
 {
@@ -10,9 +10,7 @@ int main(void)
 
     while (!sair)
     {
-        menugeral();
-        printf("opção: ");
-        scanf("%c", &opcao);
+        opcao = menugeral();
 
         switch(opcao)
         {
@@ -40,14 +38,19 @@ int main(void)
     }
 }
 
-void menugeral(void)
+char menugeral(void)
 {
+    char resposta;
+
     printf("-------- MENU GERAL --------\n");
     printf("[0] - Sair\n");
     printf("[1] - Alunos\n");
     printf("[2] - Professores\n");
     printf("[3] - Relatórios\n");
     printf("----------------------------\n");
+    printf("opção: ");
+    scanf("%c", &resposta);
+    return resposta;
 }
 
 //void menu_aluno(void)
