@@ -1,20 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define TAM_ALUNO 50
+#include <string.h>
+#include "escola.h"
 
-typedef struct
-{
-    char nome[TAM_ALUNO];
-    char matricula[TAM_ALUNO];
-    char sexo;
-    char data[TAM_ALUNO];
-    char cpf[TAM_ALUNO];
-    int ativo;
-} aluno;
+#define TAM_ALUNO 50
+#define aluno_inexistente -1
+
 
 char menugeral(void);
 char menu_aluno(void);
 void cadastrar_aluno(int posicao, aluno alunos[]);
+void listar_alunos(int tamanho, aluno aluno[]);
+aluno excluir_alunos(int tamanho, aluno aluno[], int indice);
+int procura_aluno(int tamanho, aluno aluno[], char matricula[]);
+void atualizar_aluno(aluno aluno[], int indice);
 
 int main(void)
 {
@@ -50,8 +49,46 @@ int main(void)
                         {
                             cadastrar_aluno(q_alunos, alunos);
                             q_alunos++;
+                            break;
                         }
+                        case '2':{
+                            listar_alunos(q_alunos, alunos);
+                            break;
+                        }
+                        case '3':{
+                            char matricula[TAM_ALUNO];
+                            printf("Digite a matricula do aluno: ");
+                            fgets(matricula, 50, stdin);
+                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
                         
+                            if (posicao_aluno == aluno_inexistente)
+                            {
+                                printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
+                            }
+                            else
+                            {
+                                atualizar_aluno(alunos, posicao_aluno);
+                            }
+                            break;
+                        }
+                        case '4':{
+                            char matricula[TAM_ALUNO];
+                            printf("Digite a matricula do aluno: ");
+                            fgets(matricula, 50, stdin);
+                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                        
+                            if (posicao_aluno == aluno_inexistente)
+                            {
+                                printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
+                            }
+                            else
+                            {
+                                alunos[TAM_ALUNO] = excluir_alunos(q_alunos, alunos, posicao_aluno);
+                                q_alunos--;
+                            }
+                           
+                        }
+
                     }
 
                 } 
@@ -74,52 +111,3 @@ int main(void)
     }
 }
 
-char menugeral(void)
-{
-    char resposta;
-
-    printf("\n-------- MENU GERAL --------\n");
-    printf("[0] - Sair\n");
-    printf("[1] - Alunos\n");
-    printf("[2] - Professores\n");
-    printf("[3] - Relatórios\n");
-    printf("----------------------------\n");
-    printf("Opção: ");
-    resposta = getchar();
-    while (getchar() != '\n');
-    return resposta;
-}
-
-char menu_aluno(void)
-{
-    char resposta;
-
-    printf("\n---------- ALUNOS ----------\n");
-    printf("[0] - Voltar\n");
-    printf("[1] - Cadastrar Aluno\n");
-    printf("[2] - Listar Alunos\n");
-    printf("[3] - Atualizar Cadastro\n");
-    printf("[4] - Excluir Aluno\n");
-    printf("----------------------------\n");
-    printf("Opção: ");
-    resposta = getchar();
-    while (getchar() != '\n');
-    return resposta;
-
-}
-
-void cadastrar_aluno(int posicao, aluno aluno[])
-{
-    printf("\n---------- CADASTRAR ----------\n");
-    printf("NOME: ");
-    fgets(aluno[posicao].nome, 50, stdin);
-    printf("MATRÍCULA: ");
-    fgets(aluno[posicao].matricula, 50, stdin);
-    printf("DATA: ");
-    fgets(aluno[posicao].data, 50, stdin);
-    printf("CPF: ");
-    fgets(aluno[posicao].cpf, 11, stdin);
-    printf("SEXO: ");
-    aluno[posicao].sexo = getchar();
-     printf("---------------------------------\n");
-}
