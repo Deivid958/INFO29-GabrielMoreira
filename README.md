@@ -1,2 +1,2 @@
 # INFO29-GabrielMoreira
-Responde exercícios da matéria INFO29
+Responder exercícios da matéria INFO29
