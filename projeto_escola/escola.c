@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "escola.h"
-
+//irineu
 #define TAM_ALUNO 50
 #define aluno_inexistente -1
 
