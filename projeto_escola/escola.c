@@ -2,112 +2,59 @@
 #include <stdlib.h>
 #include <string.h>
 #include "escola.h"
-
 #define TAM_ALUNO 50
 #define aluno_inexistente -1
+#include "Disci_funcoes.h"
+#define TAM_ALUNO 50
+#define TAM_DISCIPLINA 10
 
-
-char menugeral(void);
-char menu_aluno(void);
-void cadastrar_aluno(int posicao, aluno alunos[]);
-void listar_alunos(int tamanho, aluno aluno[]);
-aluno excluir_alunos(int tamanho, aluno aluno[], int indice);
-int procura_aluno(int tamanho, aluno aluno[], char matricula[]);
-void atualizar_aluno(aluno aluno[], int indice);
-
-int main(void)
+char menugeral(void)
 {
-    int sair = 0, sair_aluno = 0;
-    int opcao = 0, opcao_aluno = 0; 
-    aluno alunos[TAM_ALUNO];
-    int q_alunos = 0;
+    char resposta;
 
-    while (!sair)
-    {
-        opcao = menugeral();
-        sair_aluno = 0;
-
-        switch(opcao)
-        {
-            case '0':{
-                sair = 1;
-                break;
-            }
-            case '1':{
-                while (!sair_aluno)
-                {
-                    opcao_aluno = menu_aluno();
-
-                    switch(opcao_aluno)
-                    {
-                        case '0':
-                        {
-                            sair_aluno = 1;
-                            break;
-                        }
-                        case '1':
-                        {
-                            cadastrar_aluno(q_alunos, alunos);
-                            q_alunos++;
-                            break;
-                        }
-                        case '2':{
-                            listar_alunos(q_alunos, alunos);
-                            break;
-                        }
-                        case '3':{
-                            char matricula[TAM_ALUNO];
-                            printf("Digite a matricula do aluno: ");
-                            fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
-                        
-                            if (posicao_aluno == aluno_inexistente)
-                            {
-                                printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
-                            }
-                            else
-                            {
-                                atualizar_aluno(alunos, posicao_aluno);
-                            }
-                            break;
-                        }
-                        case '4':{
-                            char matricula[TAM_ALUNO];
-                            printf("Digite a matricula do aluno: ");
-                            fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
-                        
-                            if (posicao_aluno == aluno_inexistente)
-                            {
-                                printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
-                            }
-                            else
-                            {
-                                alunos[TAM_ALUNO] = excluir_alunos(q_alunos, alunos, posicao_aluno);
-                                q_alunos--;
-                            }
-                           
-                        }
-
-                    }
-
-                } 
-                break;
-            }
-            
-            case '2':{
-                printf("Professores\n");
-                break; 
-            }
-            case '3':{
-                printf("Relatórios\n");
-                break;
-            }
-            default:{
-                printf("opção invalida!\n");
-                break;
-            }    
-        }
-    }
+    printf("\n-------- MENU GERAL --------\n");
+    printf("[0] - Sair\n");
+    printf("[1] - Alunos\n");
+    printf("[2] - Professores\n");
+    printf("[3] - Disciplinas\n");
+    printf("[4] - Relatórios\n");
+    printf("----------------------------\n");
+    printf("Opção: ");
+    resposta = getchar();
+    while (getchar() != '\n');
+    return resposta;
 }
 
+char menu_aluno(void)
+{
+    char resposta;
+
+    printf("\n---------- ALUNOS ----------\n");
+    printf("[0] - Voltar\n");
+    printf("[1] - Cadastrar Aluno\n");
+    printf("[2] - Listar Alunos\n");
+    printf("[3] - Atualizar Cadastro\n");
+    printf("[4] - Excluir Aluno\n");
+    printf("----------------------------\n");
+    printf("Opção: ");
+    resposta = getchar();
+    while (getchar() != '\n');
+    return resposta;
+
+}
+
+void cadastrar_aluno(int posicao, aluno aluno[])
+{
+    printf("\n---------- CADASTRAR ----------\n");
+    printf("NOME: ");
+    fgets(aluno[posicao].nome, 50, stdin);
+    printf("MATRÍCULA: ");
+    fgets(aluno[posicao].matricula, 50, stdin);
+    printf("DATA: ");
+    fgets(aluno[posicao].data, 50, stdin);
+    printf("CPF: ");
+    fgets(aluno[posicao].cpf, 11, stdin);
+    printf("SEXO: ");
+    aluno[posicao].sexo = getchar();
+     printf("---------------------------------\n");
+}
