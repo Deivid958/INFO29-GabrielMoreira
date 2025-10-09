@@ -15,14 +15,14 @@ typedef struct
     int ativo;
 } pessoa;
 
-void listar_alunos(int tamanho, pessoa aluno[])
+void listar_pessoas(int tamanho, pessoa pessoas[])
 {
     for (int i = 0; i < tamanho; i++)
     {
         printf("\n-------------------- LISTA DE ALUNOS --------------------\n");
         for(int i = 0; i < tamanho; i++)
         {
-            printf("NOME: %sMATRICULA: %sDATA: %sCPF: %sSEXO: %c\n", aluno[i].nome, aluno[i].matricula, aluno[i].data, aluno[i].cpf, aluno[i].sexo);
+            printf("NOME: %sMATRICULA: %sDATA: %sCPF: %sSEXO: %c\n", pessoas[i].nome, pessoas[i].matricula, pessoas[i].data, pessoas[i].cpf, pessoas[i].sexo);
             printf("\n");
         }
         printf("-----------------------------------------------------------\n");
@@ -45,16 +45,16 @@ char menugeral(void)
     return resposta;
 }
 
-char menu_aluno(void)
+char menu_pessoa(char tipo[])
 {
     char resposta;
 
-    printf("\n---------- ALUNOS ----------\n");
+    printf("\n---------- %s ----------\n", tipo);
     printf("[0] - Voltar\n");
-    printf("[1] - Cadastrar Aluno\n");
-    printf("[2] - Listar Alunos\n");
+    printf("[1] - Cadastrar %s\n", tipo);
+    printf("[2] - Listar %s\n", tipo);
     printf("[3] - Atualizar Cadastro\n");
-    printf("[4] - Excluir Aluno\n");
+    printf("[4] - Excluir %s\n", tipo);
     printf("----------------------------\n");
     printf("Opção: ");
     resposta = getchar();
@@ -63,29 +63,29 @@ char menu_aluno(void)
 
 }
 
-void cadastrar_aluno(int tamanho, pessoa aluno[])
+void cadastrar_pessoa(int tamanho, pessoa pessoas[])
 {
     printf("\n---------- CADASTRAR ----------\n");
     printf("NOME: ");
-    fgets(aluno[tamanho].nome, 50, stdin);
+    fgets(pessoas[tamanho].nome, 50, stdin);
     printf("MATRÍCULA: ");
-    fgets(aluno[tamanho].matricula, 50, stdin);
+    fgets(pessoas[tamanho].matricula, 50, stdin);
     printf("DATA: ");
-    fgets(aluno[tamanho].data, 50, stdin);
+    fgets(pessoas[tamanho].data, 50, stdin);
     printf("CPF: ");
-    fgets(aluno[tamanho].cpf, 11, stdin);
+    fgets(pessoas[tamanho].cpf, 11, stdin);
     printf("SEXO: ");
-    aluno[tamanho].sexo = getchar();
+    pessoas[tamanho].sexo = getchar();
     while (getchar() != '\n');
     printf("---------------------------------\n");
 }
 
-int procura_aluno(int tamanho, pessoa aluno[], char matricula[])
+int procura_pessoa(int tamanho, pessoa pessoas[], char matricula[])
 {
 
     for(int i = 0; i < tamanho; i++)
     {
-        if (strcmp(matricula, aluno[i].matricula) == 0) 
+        if (strcmp(matricula, pessoas[i].matricula) == 0) 
         {
             return i;
         }
@@ -94,16 +94,16 @@ int procura_aluno(int tamanho, pessoa aluno[], char matricula[])
     return aluno_inexistente;
 }
 
-pessoa excluir_alunos(int tamanho, pessoa aluno[], int indice)
+pessoa excluir_pessoa(int tamanho, pessoa pessoas[], int indice)
 {
     for(int i = indice; i < tamanho; i++)
     {
-        aluno[i] = aluno[i+1];   
+        pessoas[i] = pessoas[i+1];   
     }
-    return aluno[TAM_ALUNO];
+    return pessoas[TAM_ALUNO];
 }
 
-void atualizar_aluno(pessoa aluno[], int indice)
+void atualizar_pessoa(pessoa pessoas[], int indice)
 {
-    cadastrar_aluno(indice, aluno);
+    cadastrar_pessoa(indice, pessoas);
 }

@@ -8,12 +8,12 @@
 
 
 char menugeral(void);
-char menu_aluno(void);
-void cadastrar_aluno(int posicao, pessoa alunos[]);
-void listar_alunos(int tamanho, pessoa aluno[]);
-pessoa excluir_alunos(int tamanho, pessoa aluno[], int indice);
-int procura_aluno(int tamanho, pessoa aluno[], char matricula[]);
-void atualizar_aluno(pessoa aluno[], int indice);
+char menu_pessoa(char tipo[]);
+void cadastrar_pessoa(int posicao, pessoa pessoas[]);
+void listar_pessoas(int tamanho, pessoa pessoas[]);
+pessoa excluir_pessoa(int tamanho, pessoa pessoas[], int indice);
+int procura_pessoa(int tamanho, pessoa pessoas[], char matricula[]);
+void atualizar_pessoa(pessoa pessoas[], int indice);
 
 int main(void)
 {
@@ -36,7 +36,7 @@ int main(void)
             case '1':{
                 while (!sair_aluno)
                 {
-                    opcao_aluno = menu_aluno();
+                    opcao_aluno = menu_pessoa("Aluno");
 
                     switch(opcao_aluno)
                     {
@@ -47,19 +47,19 @@ int main(void)
                         }
                         case '1':
                         {
-                            cadastrar_aluno(q_alunos, alunos);
+                            cadastrar_pessoa(q_alunos, alunos);
                             q_alunos++;
                             break;
                         }
                         case '2':{
-                            listar_alunos(q_alunos, alunos);
+                            listar_pessoas(q_alunos, alunos);
                             break;
                         }
                         case '3':{
                             char matricula[TAM_ALUNO];
                             printf("Digite a matricula do aluno: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                         
                             if (posicao_aluno == aluno_inexistente)
                             {
@@ -67,7 +67,7 @@ int main(void)
                             }
                             else
                             {
-                                atualizar_aluno(alunos, posicao_aluno);
+                                atualizar_pessoa(alunos, posicao_aluno);
                             }
                             break;
                         }
@@ -75,7 +75,7 @@ int main(void)
                             char matricula[TAM_ALUNO];
                             printf("Digite a matricula do aluno: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                         
                             if (posicao_aluno == aluno_inexistente)
                             {
@@ -83,7 +83,7 @@ int main(void)
                             }
                             else
                             {
-                                alunos[TAM_ALUNO] = excluir_alunos(q_alunos, alunos, posicao_aluno);
+                                alunos[TAM_ALUNO] = excluir_pessoa(q_alunos, alunos, posicao_aluno);
                                 q_alunos--;
                             }
                            
