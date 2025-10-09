@@ -2,16 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include "escola.h"
-//irineu
+
 #define TAM_ALUNO 50
 #define aluno_inexistente -1
 
+
+char menugeral(void);
+char menu_aluno(void);
+void cadastrar_aluno(int posicao, pessoa alunos[]);
+void listar_alunos(int tamanho, pessoa aluno[]);
+pessoa excluir_alunos(int tamanho, pessoa aluno[], int indice);
+int procura_aluno(int tamanho, pessoa aluno[], char matricula[]);
+void atualizar_aluno(pessoa aluno[], int indice);
 
 int main(void)
 {
     int sair = 0, sair_aluno = 0;
     int opcao = 0, opcao_aluno = 0; 
-    aluno alunos[TAM_ALUNO];
+    pessoa alunos[TAM_ALUNO];
     int q_alunos = 0;
 
     while (!sair)
@@ -75,7 +83,7 @@ int main(void)
                             }
                             else
                             {
-                                excluir_alunos(q_alunos, alunos, posicao_aluno);
+                                alunos[TAM_ALUNO] = excluir_alunos(q_alunos, alunos, posicao_aluno);
                                 q_alunos--;
                             }
                            
