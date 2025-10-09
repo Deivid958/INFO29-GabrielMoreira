@@ -14,7 +14,7 @@ int main(void)
     int codigo, posicao_disciplina, resposta_disciplina;
     int sair = 0, sair_menu = 0;
     int opcao = 0, opcao_menu = 0; 
-    aluno alunos[TAM_ALUNO];
+    pessoa alunos[TAM_ALUNO];
     disci disciplina[TAM_DISCIPLINA];
     int q_alunos = 0,q_disicplinas = 0;
 
@@ -22,6 +22,7 @@ int main(void)
     {
         opcao = menugeral();
         sair_aluno = 0;
+
         switch(opcao)
         {
             case '0':{
@@ -31,7 +32,7 @@ int main(void)
             case '1':{
                 while (!sair_menu)
                 {
-                    opcao_menu = menu_aluno();
+                    opcao_menu = menu_pessoa("Aluno");
 
                     switch(opcao_menu)
                     {
@@ -42,19 +43,19 @@ int main(void)
                         }
                         case '1':
                         {
-                            cadastrar_aluno(q_alunos, alunos);
+                            cadastrar_pessoa(q_alunos, alunos);
                             q_alunos++;
                             break;
                         }
                         case '2':{
-                            listar_alunos(q_alunos, alunos);
+                            listar_pessoas(q_alunos, alunos);
                             break;
                         }
                         case '3':{
                             char matricula[TAM_ALUNO];
                             printf("Digite a matricula do aluno: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                         
                             if (posicao_aluno == cadastro_inexistente)
                             {
@@ -62,14 +63,14 @@ int main(void)
                             }
                             else
                             {
-                                atualizar_aluno(alunos, posicao_aluno);
+                                atualizar_pessoa(alunos, posicao_aluno);
                             }
                             break;
                         }
                         case '4':{
                             printf("Digite a matricula do aluno: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                         
                             if (posicao_aluno == cadastro_inexistente)
                             {
@@ -77,7 +78,7 @@ int main(void)
                             }
                             else
                             {
-                                excluir_alunos(q_alunos, alunos, posicao_aluno);
+                                alunos[TAM_ALUNO] = excluir_pessoa(q_alunos, alunos, posicao_aluno);
                                 q_alunos--;
                             }
                         }
@@ -119,7 +120,7 @@ int main(void)
                         {
                             printf("Digite o codigo da disciplina: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                             if (posicao_aluno == cadastro_inexistente)
                             {
                                 printf("Codigo digitado não pertence a nenhuma disciplina cadastrada!!\n");
@@ -134,7 +135,7 @@ int main(void)
                         { 
                             printf("Digite o codigo da disciplina: ");
                             fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_aluno(q_alunos, alunos, matricula);
+                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
                             if (posicao_aluno == cadastro_inexistente)
                             {
                                 printf("Codigo digitado não pertence a nenhuma disciplina cadastrada!!\n");
@@ -148,6 +149,7 @@ int main(void)
                 }   
                 break;
             }
+            
             default:{
                 printf("opção invalida!\n");
                 break;
