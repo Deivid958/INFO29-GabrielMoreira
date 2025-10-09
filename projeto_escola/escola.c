@@ -7,14 +7,6 @@
 #define aluno_inexistente -1
 
 
-char menugeral(void);
-char menu_aluno(void);
-void cadastrar_aluno(int posicao, aluno alunos[]);
-void listar_alunos(int tamanho, aluno aluno[]);
-aluno excluir_alunos(int tamanho, aluno aluno[], int indice);
-int procura_aluno(int tamanho, aluno aluno[], char matricula[]);
-void atualizar_aluno(aluno aluno[], int indice);
-
 int main(void)
 {
     int sair = 0, sair_aluno = 0;
@@ -83,7 +75,7 @@ int main(void)
                             }
                             else
                             {
-                                alunos[TAM_ALUNO] = excluir_alunos(q_alunos, alunos, posicao_aluno);
+                                excluir_alunos(q_alunos, alunos, posicao_aluno);
                                 q_alunos--;
                             }
                            
