@@ -4,6 +4,10 @@
 
 #define TAM_ALUNO 50
 #define aluno_inexistente -1
+#define pessoa_inexistente -2
+#define excluido 0
+#define vazio -3
+
 
 typedef struct
 {
@@ -12,17 +16,26 @@ typedef struct
     char sexo;
     char data[TAM_ALUNO];
     char cpf[TAM_ALUNO];
-    int ativo;
+    int cursando[TAM_ALUNO];
 } pessoa;
+
+char menugeral(void);
+char menu_pessoa(char tipo[]);
+void cadastrar_pessoa(int posicao, pessoa pessoas[]);
+void listar_pessoas(int tamanho, pessoa pessoas[]);
+int excluir_pessoa(int tamanho, pessoa pessoas[]);
+int atualiza_pessoa(int tamanho, pessoa pessoas[]);
 
 void listar_pessoas(int tamanho, pessoa pessoas[])
 {
+    if (tamanho == 0)
+        printf("nenhuma pessoa cadastrada\n");
     for (int i = 0; i < tamanho; i++)
     {
-        printf("\n-------------------- LISTA DE ALUNOS --------------------\n");
+        printf("\n-------------------- LISTA DE PESSOAS --------------------\n");
         for(int i = 0; i < tamanho; i++)
         {
-            printf("NOME: %sMATRICULA: %sDATA: %sCPF: %sSEXO: %c\n", pessoas[i].nome, pessoas[i].matricula, pessoas[i].data, pessoas[i].cpf, pessoas[i].sexo);
+            printf("NOME: %s\nMATRICULA: %s\nDATA: %s\nCPF: %s\nSEXO: %c\n", pessoas[i].nome, pessoas[i].matricula, pessoas[i].data, pessoas[i].cpf, pessoas[i].sexo);
             printf("\n");
         }
         printf("-----------------------------------------------------------\n");
@@ -37,7 +50,8 @@ char menugeral(void)
     printf("[0] - Sair\n");
     printf("[1] - Alunos\n");
     printf("[2] - Professores\n");
-    printf("[3] - Relatórios\n");
+    printf("[3] - Disciplinas\n");
+    printf("[4] - Relatórios\n");
     printf("----------------------------\n");
     printf("Opção: ");
     resposta = getchar();
@@ -68,42 +82,80 @@ void cadastrar_pessoa(int tamanho, pessoa pessoas[])
     printf("\n---------- CADASTRAR ----------\n");
     printf("NOME: ");
     fgets(pessoas[tamanho].nome, 50, stdin);
+    pessoas[tamanho].nome[strcspn(pessoas[tamanho].nome, "\n")] = '\0';
     printf("MATRÍCULA: ");
     fgets(pessoas[tamanho].matricula, 50, stdin);
+    pessoas[tamanho].matricula[strcspn(pessoas[tamanho].matricula, "\n")] = '\0';
     printf("DATA: ");
     fgets(pessoas[tamanho].data, 50, stdin);
+    pessoas[tamanho].data[strcspn(pessoas[tamanho].data, "\n")] = '\0';
     printf("CPF: ");
-    fgets(pessoas[tamanho].cpf, 11, stdin);
+    fgets(pessoas[tamanho].cpf, 13, stdin);
+    pessoas[tamanho].cpf[strcspn(pessoas[tamanho].cpf, "\n")] = '\0';
     printf("SEXO: ");
     pessoas[tamanho].sexo = getchar();
     while (getchar() != '\n');
+    for(int x = 0; x < TAM_ALUNO; x++)
+    {
+        pessoas[tamanho].cursando[x] = 0;
+    }
     printf("---------------------------------\n");
 }
 
-int procura_pessoa(int tamanho, pessoa pessoas[], char matricula[])
+int atualiza_pessoa(int tamanho, pessoa pessoas[])
 {
-
+    if(tamanho == 0)
+    {
+        printf("nenhuma pessoa cadastrada\n");
+        return vazio;
+    }
+    char matricula[TAM_ALUNO];
+    printf("Digite a matricula: ");
+    fgets(matricula, 50, stdin);
+    matricula[strcspn(matricula, "\n")] = '\0';
     for(int i = 0; i < tamanho; i++)
     {
         if (strcmp(matricula, pessoas[i].matricula) == 0) 
         {
-            return i;
+            cadastrar_pessoa(i, pessoas);
+            return 0;
         }
         
     }
-    return aluno_inexistente;
+    return pessoa_inexistente;
 }
 
-pessoa excluir_pessoa(int tamanho, pessoa pessoas[], int indice)
+int excluir_pessoa(int tamanho, pessoa pessoas[])
 {
-    for(int i = indice; i < tamanho; i++)
+    if (tamanho == 0)
     {
-        pessoas[i] = pessoas[i+1];   
+        printf("nenhuma pessoa cadastrada");
+        return vazio;
     }
-    return pessoas[TAM_ALUNO];
+    char matric[20];
+    int encontrado = 0;
+
+    printf("Digite a matrícula: ");
+    fgets(matric, 20, stdin);
+    matric[strcspn(matric, "\n")] = '\0';
+  
+    for(int i = 0; i < tamanho; i++)
+    {
+        if(strcmp(pessoas[i].matricula, matric) == 0)
+        {
+            for(int j = i; j < tamanho; j++)
+            {
+                pessoas[j] = pessoas[j + 1];
+            }
+            encontrado = 1;
+            break;
+        }
+        
+    }
+    if (encontrado == 1)
+        return excluido;
+    else
+        return pessoa_inexistente;
+    
 }
 
-void atualizar_pessoa(pessoa pessoas[], int indice)
-{
-    cadastrar_pessoa(indice, pessoas);
-}

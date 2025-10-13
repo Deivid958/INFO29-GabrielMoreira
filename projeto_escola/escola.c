@@ -2,30 +2,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include "escola.h"
+#include "disciplinas.h"
 
 #define TAM_ALUNO 50
-#define aluno_inexistente -1
 
-
-char menugeral(void);
-char menu_pessoa(char tipo[]);
-void cadastrar_pessoa(int posicao, pessoa pessoas[]);
-void listar_pessoas(int tamanho, pessoa pessoas[]);
-pessoa excluir_pessoa(int tamanho, pessoa pessoas[], int indice);
-int procura_pessoa(int tamanho, pessoa pessoas[], char matricula[]);
-void atualizar_pessoa(pessoa pessoas[], int indice);
 
 int main(void)
 {
-    int sair = 0, sair_aluno = 0;
-    int opcao = 0, opcao_aluno = 0; 
+    int sair = 0, sair_menu = 0;
+    int opcao = 0, opcao_menu = 0; 
     pessoa alunos[TAM_ALUNO];
+    pessoa professores[TAM_ALUNO];
+    disciplina disciplinas[TAM_ALUNO];
     int q_alunos = 0;
+    int q_professor = 0;
+    int q_disciplina = 0;
+    int retorno = 0;
+    int atualiza = 0;
 
     while (!sair)
     {
         opcao = menugeral();
-        sair_aluno = 0;
+        sair_menu = 0;
 
         switch(opcao)
         {
@@ -34,15 +32,15 @@ int main(void)
                 break;
             }
             case '1':{
-                while (!sair_aluno)
+                while (!sair_menu)
                 {
-                    opcao_aluno = menu_pessoa("Aluno");
+                    opcao_menu = menu_pessoa("Aluno");
 
-                    switch(opcao_aluno)
+                    switch(opcao_menu)
                     {
                         case '0':
                         {
-                            sair_aluno = 1;
+                            sair_menu = 1;
                             break;
                         }
                         case '1':
@@ -56,37 +54,29 @@ int main(void)
                             break;
                         }
                         case '3':{
-                            char matricula[TAM_ALUNO];
-                            printf("Digite a matricula do aluno: ");
-                            fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
+                            
+                            atualiza = atualiza_pessoa(q_alunos, alunos);
                         
-                            if (posicao_aluno == aluno_inexistente)
+                            if (atualiza == pessoa_inexistente)
                             {
                                 printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
                             }
-                            else
+                            else if(atualiza == 0)
                             {
-                                atualizar_pessoa(alunos, posicao_aluno);
+                                printf("Aluno atualizado com sucesso\n");
                             }
                             break;
                         }
                         case '4':{
-                            char matricula[TAM_ALUNO];
-                            printf("Digite a matricula do aluno: ");
-                            fgets(matricula, 50, stdin);
-                            int posicao_aluno = procura_pessoa(q_alunos, alunos, matricula);
-                        
-                            if (posicao_aluno == aluno_inexistente)
+                            retorno = excluir_pessoa(q_alunos, alunos);
+                            
+                            if (retorno == excluido)
                             {
-                                printf("Matricula digitada não pertence a nenhum aluno cadastrado!!\n");
-                            }
-                            else
-                            {
-                                alunos[TAM_ALUNO] = excluir_pessoa(q_alunos, alunos, posicao_aluno);
                                 q_alunos--;
+                                printf("Aluno excluido com sucesso\n");
                             }
-                           
+                            else if(retorno == pessoa_inexistente)
+                                printf("Aluno não existe ou a matrícula foi digida incorretamente\n");
                         }
 
                     }
@@ -96,11 +86,122 @@ int main(void)
             }
             
             case '2':{
-                printf("Professores\n");
-                break; 
+                 while (!sair_menu)
+                {
+                    opcao_menu = menu_pessoa("Professor");
+
+                    switch(opcao_menu)
+                    {
+                        case '0':
+                        {
+                            sair_menu = 1;
+                            break;
+                        }
+                        case '1':
+                        {
+                            cadastrar_pessoa(q_professor, professores);
+                            q_professor++;
+                            break;
+                        }
+                        case '2':{
+                            listar_pessoas(q_professor, professores);
+                            break;
+                        }
+                        case '3':{
+                            
+                            atualiza = atualiza_pessoa(q_professor, professores);
+                        
+                            if (atualiza == pessoa_inexistente)
+                            {
+                                printf("Matricula digitada não pertence a nenhum professor cadastrado!!\n");
+                            }
+                            else if (atualiza == 0)
+                            {
+                                printf("professor atualizado com sucesso\n");
+                            }
+                            break;
+                        }
+                        case '4':{
+                            int retorno = excluir_pessoa(q_professor, professores);
+                            
+                            if (retorno == excluido)
+                            {
+                                q_professor--;
+                                printf("professor excluido com sucesso\n");
+                            }
+                            else if(retorno == pessoa_inexistente)
+                                printf("professor não existe ou a matrícula foi digida incorretamente\n");
+                        }
+
+                    }
+
+                } 
+                break;
+
+               
             }
             case '3':{
-                printf("Relatórios\n");
+                printf("Disciplinas\n");
+                while(!sair_menu)
+                {
+                    opcao_menu = menu_disciplina();
+
+                    switch(opcao_menu)
+                    {
+                        case '0':{
+                            sair_menu = 1;
+                            break;
+                        }
+                        case '1':{
+                            int dp = cadastrar_disciplina(q_disciplina, disciplinas, q_professor, professores);
+                            if (dp == invalido)
+                            {
+                                printf("o professor não existe ou você digigou incorretamente\n");
+                            }
+                            else if(dp == 0)
+                            {
+                                q_disciplina++;
+                            }
+                            break;
+                        case '2':{
+                            int lista_dp = listar_disciplina(q_disciplina, disciplinas, q_alunos, alunos);
+                            break;
+                        }
+                        case '3':{
+                            int excluir_dp = excluir_disciplina(q_disciplina, disciplinas);
+
+                            if (excluir_dp == vazio)
+                            {
+                                printf("nenhuma disciplina cadastrada\n");
+                            }
+                            else if(excluir_dp == pessoa_inexistente)
+                            {
+                                printf("A disciplina digitada pelo usuário não existe\n");
+                            }
+                            else if(excluir_dp == excluido)
+                            {
+                                printf("disciplina excluida com sucesso\n");
+                            }
+                            q_disciplina--;
+                            break;
+                        }
+                        case '4':{
+
+                            break;
+                        }
+                        case '5':{
+                            int incluir = incluir_aluno(q_disciplina, disciplinas, q_alunos, alunos);
+                            
+                            break;
+                        }
+                        }
+                        
+                    }
+                }
+                break;
+            }
+            case '4':{
+                printf("Relatórios");
                 break;
             }
             default:{
