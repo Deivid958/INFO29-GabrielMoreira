@@ -163,12 +163,17 @@ int main(void)
                                 q_disciplina++;
                             }
                             break;
+                        }
                         case '2':{
                             int lista_dp = listar_disciplina(q_disciplina, disciplinas, q_alunos, alunos);
                             break;
                         }
                         case '3':{
-                            int excluir_dp = excluir_disciplina(q_disciplina, disciplinas);
+                            int atualizar_dp = atualizar_disciplina(q_disciplina, disciplinas, q_professor, professores);
+                            break;
+                        }
+                        case '4':{
+                            int excluir_dp = excluir_disciplina(q_disciplina, disciplinas, q_alunos, alunos);
 
                             if (excluir_dp == vazio)
                             {
@@ -185,17 +190,14 @@ int main(void)
                             q_disciplina--;
                             break;
                         }
-                        case '4':{
-
-                            break;
-                        }
                         case '5':{
                             int incluir = incluir_aluno(q_disciplina, disciplinas, q_alunos, alunos);
-                            
                             break;
                         }
+                        case '6':{
+                            int excluir = excluir_aluno(q_disciplina, disciplinas, q_alunos, alunos);
+                            break;
                         }
-                        
                     }
                 }
                 break;

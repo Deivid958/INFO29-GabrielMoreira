@@ -21,7 +21,8 @@ typedef struct
 char menu_disciplina(void);
 int cadastrar_disciplina(int tamanho, disciplina disciplinas[], int p_tamanho, pessoa professores[]);
 int listar_disciplina(int tamanho, disciplina disciplinas[], int q_alunos, pessoa alunos[]);
-int excluir_disciplina(int tamanho, disciplina disciplinas[]);
+int excluir_disciplina(int tamanho, disciplina disciplinas[], int q_alunos, pessoa alunos[]);
+int atualizar_disciplina(int tamanho, disciplina disciplinas[], int q_professores, pessoa professores[]);
 
 
 char menu_disciplina(void)
@@ -35,6 +36,7 @@ char menu_disciplina(void)
     printf("[3] - Atualizar Disciplina\n");
     printf("[4] - Excluir Disciplina\n");
     printf("[5] - Incluir Aluno\n");
+    printf("[6] - Excluir Aluno\n");
     printf("-----------------------------------\n");
     printf("Opção: ");
     resposta = getchar();
@@ -69,7 +71,6 @@ int cadastrar_disciplina(int tamanho, disciplina disciplinas[], int p_tamanho, p
         }
     }
     printf("---------------------------------\n");
-    //se retornar invalido imprima uma mensagem falando que o professor não foi encontrado e não acrescente nenhum valor ao q_disciplinas
     return invalido;
 }
 
@@ -136,10 +137,12 @@ int listar_disciplina(int tamanho, disciplina disciplinas[], int q_alunos, pesso
     return 0;
 }
 
-int excluir_disciplina(int tamanho, disciplina disciplinas[])
+int excluir_disciplina(int tamanho, disciplina disciplinas[], int q_alunos, pessoa alunos[])
 {
     char codigo[20];
     int encontrado = 0;
+    int posicao = 0;
+
     if (tamanho == 0)
     {
         printf("nenhuma pessoa disciplina cadastrada");
@@ -154,17 +157,103 @@ int excluir_disciplina(int tamanho, disciplina disciplinas[])
     {
         if(strcmp(disciplinas[i].codigo, codigo) == 0)
         {
+            posicao = i;
             for(int j = i; j < tamanho; j++)
             {
                 disciplinas[j] = disciplinas[j + 1];
-            }
+            } 
             encontrado = 1;
             break;
         }
         
     }
-    if (encontrado == 1)
+    if(encontrado == 1)
+    {
+        for (int x = 0; x < q_alunos; x++)
+        {
+            for (int y = posicao; y < 49; y++)
+            {
+                alunos[x].cursando[y] = alunos[x].cursando[y+1];
+                alunos[x].cursando[y+1] = 0;
+            }
+        }
         return excluido;
+    }
     else
         return pessoa_inexistente;
+}
+
+int atualizar_disciplina(int tamanho, disciplina disciplinas[], int q_professores, pessoa professores[])
+{
+    char codigo[20];
+    int encontrado = 0;
+    int c = 0;
+
+    printf("Digite o código da disciplina: ");
+    fgets(codigo, 20, stdin);
+    codigo[strcspn(codigo, "\n")] = '\0';
+
+    for(int i = 0; i < tamanho; i++)
+    {
+        if(strcmp(disciplinas[i].codigo, codigo) == 0)
+        {
+            c = cadastrar_disciplina(i, disciplinas, q_professores, professores);
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (encontrado == 1 && c == 0)
+    {
+        printf("Atualizado com sucesso\n");
+        return 0;
+    }
+    else
+    {
+        printf("Erro na atualização!\n");
+        return invalido;
+    }
+}
+
+int excluir_aluno(int tamanho, disciplina disciplinas[], int q_alunos, pessoa alunos[])
+{
+    char matricula[20];
+    char codigo[50];
+    int encontrado = 0;
+    int posicao = 0;
+
+    printf("Digite a matrícula do aluno: ");
+    fgets(matricula, 20, stdin);
+    matricula[strcspn(matricula, "\n")] = '\0';
+
+    printf("Digite o codigo da disciplina: ");
+    fgets(codigo, 20, stdin);
+    codigo[strcspn(codigo, "\n")] = '\0';
+
+    for(int i = 0; i < tamanho; i++)
+    {
+        if(strcmp(disciplinas[i].codigo, codigo) == 0)
+        {
+            posicao = i;
+            encontrado++;
+            break;
+        }
+    }
+    for(int i = 0; i < q_alunos; i++)
+    {
+        if(strcmp(alunos[i].matricula, matricula) == 0)
+        {
+            alunos[i].cursando[posicao] = 0;
+            encontrado++;
+            break;
+        }
+    }
+
+    if (encontrado == 2)
+    {
+        printf("Aluno excluido com sucesso\n");
+        return 0;
+    }
+    else
+        printf("O aluno e disciplina estão escritos incorretamente ou não existem!\n");
 }
