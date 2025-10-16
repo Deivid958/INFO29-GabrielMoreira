@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "escola.h"
 #include "disciplinas.h"
+#include "relatorios.h"
+
 
 #define TAM_ALUNO 50
 
@@ -19,6 +22,8 @@ int main(void)
     int q_disciplina = 0;
     int retorno = 0;
     int atualiza = 0;
+
+    preencher_dados_teste(alunos, &q_alunos, professores, &q_professor, disciplinas, &q_disciplina);
 
     while (!sair)
     {
@@ -203,7 +208,52 @@ int main(void)
                 break;
             }
             case '4':{
-                printf("Relatórios");
+                while (!sair_menu)
+                {
+                    opcao_menu = menu_relatorio();
+                    switch(opcao_menu)
+                    {
+                        case 0:{
+                            sair_menu = 1;
+                            break;
+                        }
+                        case 1:{
+                            exibir_disciplinas(q_disciplina, disciplinas);
+                            break;
+                        }
+                        case 2:{
+                            int exibir = exibir_disciplina(q_disciplina, disciplinas, q_alunos, alunos);
+                            break;
+                        }
+                        case 3:{
+                            int exibir = listar_alunos_sexo(q_alunos, alunos);
+                            break;
+                        }
+                        case 4:{
+                            ordenar_lista(q_alunos, alunos);
+                            listar_pessoas(q_alunos, alunos);
+                            break;
+                        }
+                        case 6:{
+                            int exibir = listar_alunos_sexo(q_professor, professores);
+                            break;
+                        }
+                        case 7:{
+                            ordenar_lista(q_professor, professores);
+                            listar_pessoas(q_professor, professores);
+                            break;
+                        }
+                        case 11:{
+                            matriculados(q_alunos, alunos);
+                            break;
+                        }
+                        case 12:{
+                            disciplinas_cheias(q_alunos, alunos, q_disciplina, disciplinas);
+                            break;
+                        }
+
+                    }
+                }
                 break;
             }
             default:{

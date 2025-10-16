@@ -30,16 +30,14 @@ void listar_pessoas(int tamanho, pessoa pessoas[])
 {
     if (tamanho == 0)
         printf("nenhuma pessoa cadastrada\n");
-    for (int i = 0; i < tamanho; i++)
+    printf("\n--------------------------------- LISTA DE PESSOAS --------------------------------------\n");
+    for(int i = 0; i < tamanho; i++)
     {
-        printf("\n-------------------- LISTA DE PESSOAS --------------------\n");
-        for(int i = 0; i < tamanho; i++)
-        {
-            printf("NOME: %s\nMATRICULA: %s\nDATA: %s\nCPF: %s\nSEXO: %c\n", pessoas[i].nome, pessoas[i].matricula, pessoas[i].data, pessoas[i].cpf, pessoas[i].sexo);
-            printf("\n");
-        }
-        printf("-----------------------------------------------------------\n");
+        printf("NOME: %s - MATRICULA: %s - DATA: %s - CPF: %s - SEXO: %c", pessoas[i].nome, pessoas[i].matricula, pessoas[i].data, pessoas[i].cpf, pessoas[i].sexo);
+        printf("\n");
     }
+    printf("\n");
+    printf("--------------------------------------------------------------------------------------------\n");  
 }
 
 char menugeral(void)
