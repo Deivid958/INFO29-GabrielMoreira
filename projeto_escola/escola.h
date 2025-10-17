@@ -8,7 +8,6 @@
 #define excluido 0
 #define vazio -3
 
-
 typedef struct
 {
     char nome[TAM_ALUNO];

@@ -234,6 +234,11 @@ int main(void)
                             listar_pessoas(q_alunos, alunos);
                             break;
                         }
+                        case 5:{
+                            ordenar_data(q_alunos, alunos);
+                            listar_pessoas(q_alunos, alunos);
+                            break;
+                        }
                         case 6:{
                             int exibir = listar_alunos_sexo(q_professor, professores);
                             break;
@@ -241,6 +246,19 @@ int main(void)
                         case 7:{
                             ordenar_lista(q_professor, professores);
                             listar_pessoas(q_professor, professores);
+                            break;
+                        }
+                        case 8:{
+                            ordenar_data(q_professor, professores);
+                            listar_pessoas(q_professor, professores);
+                            break;
+                        }
+                        case 9:{
+                            aniversarintes_mes(q_alunos, alunos, q_professor, professores);
+                            break;
+                        }
+                        case 10:{
+                            busca_3letras(q_alunos, alunos, q_professor, professores);
                             break;
                         }
                         case 11:{

@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define TAM_ALUNO 50
 #define invalido -5
 #define pessoa_inexistente -2
 #define vazio -3
 #define excluido 0
+
+int now(int tipo);
 
 int menu_relatorio(void)
 {
@@ -146,7 +149,6 @@ void matriculados(int tamanho, pessoa alunos[])
             {
                 count++;
             }
-
         }
         if (count < 3)
         {
@@ -177,7 +179,143 @@ void disciplinas_cheias(int tamanho, pessoa alunos[], int q_disciplinas, discipl
             printf("%s - %s\n", disciplinas[d].nome, disciplinas[d].codigo);
         }
         count = 0;
-    }
-        
-    
+    }   
 }
+
+int separa_data(char data[], int tipo)
+{
+    char *parte;
+    char copia[50];
+    int dia, mes, ano;
+
+    strcpy(copia, data);
+    parte = strtok(copia, "/");
+    dia = atoi(parte);
+    parte = strtok(NULL, "/");
+    mes = atoi(parte);
+    parte = strtok(NULL, "/");
+    ano = atoi(parte);
+    if (tipo == 2)
+        return ano;
+    else if (tipo == 1)
+        return mes;
+    else if (tipo == 0)
+        return dia;
+    else if (tipo == -1)
+    {
+        return (now(2) * 365 + now(1) * 30 + now(0)) - (ano * 365 + mes * 30 + dia);
+    }
+}
+
+int now(int tipo)
+{
+    time_t segundos;
+    time(&segundos);
+    struct tm *data_local = localtime(&segundos);
+
+    int dia = data_local->tm_mday;
+    int mes = data_local->tm_mon + 1;
+    int ano = data_local->tm_year + 1900;
+
+    if (tipo == 0)
+        return dia;
+    else if (tipo == 1)
+        return mes;
+    else if (tipo == 2)
+        return ano;
+}
+
+void aniversarintes_mes(int q_alunos, pessoa alunos[], int q_professores, pessoa professores[])
+{
+    int teste1 = 0, teste2 = 0;
+
+    printf("Alunos que fazem aniversário esse mês: ");
+    for(int x = 0; x < q_alunos; x++)
+    {   
+        if(separa_data(alunos[x].data, 1) == now(1))
+        {
+            printf("\nNome: %s - Matricula: %s - Data: %.2d/%.2d", alunos[x].nome, alunos[x].matricula, separa_data(alunos[x].data, 0), separa_data(alunos[x].data, 1));
+            teste1 = 1;
+        }
+    }
+    if(teste1 == 0)
+        printf("Nenhum aluno faz aniversário nesse mês\n");
+
+    printf("\nProfessores que fazem aniversário esse mês: ");
+    for(int y = 0; y < q_professores; y++)
+    {   
+        if(separa_data(professores[y].data, 1) == now(1))
+        {
+            printf("\nNome: %s - Matricula: %s - Data: %.2d/%.2d\n", professores[y].nome, professores[y].matricula, separa_data(professores[y].data, 0), separa_data(professores[y].data, 1));
+            teste2 = 1;
+        }
+    }
+    if(teste2 == 0)
+        printf("Nenhum professor faz aniversário nesse mês\n");
+}
+
+void ordenar_data(int tamanho, pessoa alunos[])
+{
+    int menor = 0;
+    int posicao = 0;
+    pessoa backup;
+
+    for(int x = 0; x < tamanho-1; x++)
+    {
+        menor = separa_data(alunos[x].data, -1);
+        for(int y = x; y < tamanho; y++)
+        {
+            if(menor > separa_data(alunos[y].data, -1))
+            {
+                menor = separa_data(alunos[y].data, -1);
+                posicao = y;
+            }
+        }
+        if(x != posicao)
+        {
+            backup = alunos[posicao];
+            alunos[posicao] = alunos[x];
+            alunos[x] = backup;
+        }
+    }
+}
+
+void busca_3letras(int tamanho, pessoa alunos[], int q_professores, pessoa professores[])
+{
+    char resposta[4];
+    int teste = 0;
+
+    do{
+        printf("Digite três letras: ");
+        fgets(resposta, 4, stdin); 
+        resposta[strcspn(resposta, "\n")] = '\0';   
+    }
+    while(strlen(resposta) != 3);
+
+    printf("Alunos: \n");
+    for (int x = 0; x < tamanho; x++)
+    {
+        if (strncmp(resposta, alunos[x].nome, 3) == 0)
+        {
+            printf("Nome: %s - Matricula: %s\n", alunos[x].nome, alunos[x].matricula);
+            teste = 1;
+        }
+    }
+    if(teste == 0)
+        printf("Nenhuma aluno encontrado\n");
+
+    printf("Professores: \n");
+    for (int x = 0; x < q_professores; x++)
+    {
+        if (strncmp(resposta, professores[x].nome, 3) == 0)
+        {
+            printf("Nome: %s - Matricula: %s\n", professores[x].nome, professores[x].matricula);
+            teste = 1;
+        }
+    }
+    if(teste == 0)
+        printf("Nenhuma professor encontrado\n");
+
+}
+
+
